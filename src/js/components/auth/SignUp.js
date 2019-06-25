@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { CssBaseline, Container, TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux';
+import { signUp } from '../../store/Actions/authActions'
 const useStyles = theme => ({
     container: {
         [theme.breakpoints.up('sm')]: {
@@ -22,8 +23,26 @@ const useStyles = theme => ({
 })
 
 class SignUp extends Component {
+
+    state = {
+        email: '',
+        password: ''
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.id]: e.target.value
+        });
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.signUp(this.state, this.props.history);
+        // this.props.history.push("/");
+    }
+
+
     render() {
-        console.log(this.props)
         const { classes } = this.props;
         return (
             <React.Fragment>
@@ -35,7 +54,7 @@ class SignUp extends Component {
                     <Typography variant="h5">
                         Sign Up
                     </Typography>
-                    <form>
+                    <form onSubmit={this.handleSubmit}>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -58,9 +77,10 @@ class SignUp extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    type="email"
+                                    onChange={this.handleChange}
                                     variant="outlined"
-
-                                    id="Email-Address"
+                                    id="email"
                                     label="Email Address"
                                     margin="normal"
                                     fullWidth
@@ -68,18 +88,19 @@ class SignUp extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    type="password"
+                                    onChange={this.handleChange}
                                     variant="outlined"
-
-                                    id="Password"
+                                    id="password"
                                     label="Password"
                                     margin="normal"
-                                    type="password"
                                     fullWidth
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
                                 <Button
+                                    type="submit"
                                     variant="contained"
                                     className={classes.button}
                                     fullWidth
@@ -99,5 +120,10 @@ SignUp.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
+const MapDispatchToProps = (dispatch) => {
+    return {
+        signUp: (state, history) => dispatch(signUp(state, history))
+    }
+}
 
-export default withStyles(useStyles)(SignUp)
+export default connect(null, MapDispatchToProps)(withStyles(useStyles)(SignUp))

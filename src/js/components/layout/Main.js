@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Layout from './Layout'
 import SignIn from '../auth/SignIn'
 import SignUp from '../auth/SignUp'
@@ -8,7 +8,7 @@ import SignUp from '../auth/SignUp'
 class Main extends Component {
 	render() {
 		return (
-			<HashRouter>
+			<HashRouter >
 				<Layout>
 					<Switch>
 						<Route path='/SignIn' component={SignIn} /> */}
@@ -16,7 +16,7 @@ class Main extends Component {
 						<Redirect from="/" to='/SignIn' />
 					</Switch>
 				</Layout>
-			</HashRouter>
+			</HashRouter >
 
 		)
 	}
