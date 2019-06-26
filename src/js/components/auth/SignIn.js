@@ -1,22 +1,24 @@
 import React, { Component } from 'react'
-import {CssBaseline, Container, TextField, Button,
-        Grid, Typography, Paper
+import {
+    CssBaseline, Container, TextField, Button,
+    Grid, Typography, Paper
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
-
+import { connect } from 'react-redux';
+import { signIn } from '../../store/Actions/authActions'
 
 const useStyles = theme => ({
     container: {
-        
-        height: '450px',
+
+        height: 'auto',
         borderRadius: '10px',
         [theme.breakpoints.up('sm')]: {
             padding: theme.spacing(3),
             backgroundColor: 'white',
-		},
-        
+        },
+
         textAlign: 'center',
     },
     textField: {
@@ -28,9 +30,27 @@ const useStyles = theme => ({
     },
 })
 
+
+
 class SignIn extends Component {
+
+    state = {
+        email: '',
+        password: ''
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.signIn(this.state, this.props.history);
+
+    }
     render() {
-        console.log(this.props)
         const { classes } = this.props;
         return (
             <React.Fragment>
@@ -42,59 +62,61 @@ class SignIn extends Component {
                     <Typography variant="h2" component="h2" gutterBottom color="primary">
                         Money
                     </Typography>
-                            <form>
-                                <TextField
-                                    variant="outlined"
-                                    id="Email-Address"
-                                    label="Email Address"
-                                    margin="normal"
-                                    fullWidth
-                                    autoFocus
-                                />
-                                <TextField
-                                    variant="outlined"
-                                    id="Password"
-                                    label="Password"
-                                    margin="normal"
-                                    type="password"
-                                    fullWidth
-                                />
-                                <Grid
-                                    container
-                                    spacing={0}
-                                    direction="column"
-                                    alignItems="center"
-                                    justify="center"
-                                >
-                                    <Button 
-                                    variant="contained" 
-                                    fullWidth 
-                                    className={classes.button}
-                                    color="secondary"
-                                    >
-                                    
-                                        LOG IN
-                                    </Button>
-
-                                </Grid>
-                                <Grid
-                                    container
-                                    spacing={0}
-                                    direction="column"
-                                    alignItems="center"
-                                    justify="center"
-                                >
-                                    <Button
-                                    variant="contained"
-                                    fullWidth
-                                    component={Link}
-                                    to='/SignUp'
-                                    >
-                                        SIGN UP
+                    <form onSubmit={this.handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            id="email"
+                            label="Email Address"
+                            margin="normal"
+                            fullWidth
+                            autoFocus
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            variant="outlined"
+                            id="password"
+                            label="Password"
+                            margin="normal"
+                            type="password"
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                        <Grid
+                            container
+                            spacing={0}
+                            direction="column"
+                            alignItems="center"
+                            justify="center"
+                        >
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                fullWidth
+                                className={classes.button}
+                                color="secondary"
+                            >
+                                LOG IN
                             </Button>
 
-                                </Grid>
-                            </form>
+                        </Grid>
+                        <Grid
+                            container
+                            spacing={0}
+                            direction="column"
+                            alignItems="center"
+                            justify="center"
+                        >
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                component={Link}
+                                to='/SignUp'
+                            >
+                                SIGN UP
+                            </Button>
+
+                        </Grid>
+                    </form>
                 </Container>
             </React.Fragment>
         )
@@ -105,4 +127,10 @@ SignIn.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(useStyles)(SignIn)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signIn: (userData, history) => dispatch(signIn(userData, history))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(useStyles)(SignIn))

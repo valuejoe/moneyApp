@@ -5,7 +5,7 @@ import Main from './components/layout/Main';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 import { createStore, applyMiddleware, compose } from 'redux';
-import RootReducer from './store/Reducers/Rootreducers';
+import rootReducers from './store/Reducers/rootreducers';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 const middleware = [thunk]
@@ -29,7 +29,7 @@ const theme = createMuiTheme({
 });
 
 const store = createStore(
-	RootReducer,
+	rootReducers,
 	compose(
 		applyMiddleware(...middleware),
 		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

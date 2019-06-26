@@ -1,4 +1,6 @@
-
+import { combineReducers } from 'redux';
+import authReducer from './authReducer';
+import componentReducer from './componentReducer'
 //  cost:[
 //     {id:0, date:'2019/1/1', title:'漢堡', category: '飲食', cost:'105'},
 //     {id:1, date:'2019/1/1', title:'珍珠奶茶', category: '飲食', cost:'50'},
@@ -10,12 +12,9 @@ const initState = {
     costLists: []
 }
 
-const rootReducer = (state = initState, action) => {
-    switch(action.type){
-        case 'SIGNUP':
-            console.log('success')
-            return state
-    }
-}
+const rootReducer = combineReducers({
+    auth: authReducer,
+    UI: componentReducer,
+})
 
 export default rootReducer

@@ -4,13 +4,14 @@ import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { signUp } from '../../store/Actions/authActions'
+import { Link } from 'react-router-dom'
 const useStyles = theme => ({
     container: {
         [theme.breakpoints.up('sm')]: {
             padding: theme.spacing(3),
             backgroundColor: 'white',
         },
-        height: '450px',
+        height: 'auto',
         borderRadius: '10px',
     },
     textField: {
@@ -18,15 +19,17 @@ const useStyles = theme => ({
         flexGrow: 1,
     },
     button: {
-        marginTop: theme.spacing(5),
+        margin: theme.spacing(5, 0, 2),
     }
 })
 
 class SignUp extends Component {
 
     state = {
+        username: '',
         email: '',
-        password: ''
+        password: '',
+        confirmPassword: ''
     }
 
     handleChange = (e) => {
@@ -44,6 +47,10 @@ class SignUp extends Component {
 
     render() {
         const { classes } = this.props;
+        const errors = this.props.UI.error
+
+        console.log(errors)
+
         return (
             <React.Fragment>
                 <CssBaseline />
@@ -55,24 +62,17 @@ class SignUp extends Component {
                         Sign Up
                     </Typography>
                     <form onSubmit={this.handleSubmit}>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} sm={6}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={12}>
                                 <TextField
+                                    onChange={this.handleChange}
                                     variant="outlined"
-                                    id="First-Name"
-                                    label="First Name"
+                                    id="username"
+                                    label="Username"
                                     margin="normal"
                                     fullWidth
                                     autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    variant="outlined"
-                                    id="Last-Name"
-                                    label="Last Name"
-                                    margin="normal"
-                                    fullWidth
+                                    error={errors.username ? true : false}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -84,6 +84,7 @@ class SignUp extends Component {
                                     label="Email Address"
                                     margin="normal"
                                     fullWidth
+                                    error={errors.email ? true : false}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -95,19 +96,43 @@ class SignUp extends Component {
                                     label="Password"
                                     margin="normal"
                                     fullWidth
+                                    error={errors.password ? true : false}
                                 />
                             </Grid>
-
                             <Grid item xs={12}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className={classes.button}
+                                <TextField
+                                    type="password"
+                                    onChange={this.handleChange}
+                                    variant="outlined"
+                                    id="confirmPassword"
+                                    label="Confirm Password"
+                                    margin="normal"
                                     fullWidth
-                                >
-                                    Submit
-                                </Button>
+                                    error={errors.confirmPassword ? true : false}
+                                />
                             </Grid>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                className={classes.button}
+                                color="secondary"
+                                fullWidth
+                            >
+                                Submit
+                                </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                variant="contained"
+                                component={Link}
+                                to='/SignIn'
+                                fullWidth
+                            >
+                                Login
+                                </Button>
                         </Grid>
                     </form>
                 </Container>
@@ -120,10 +145,16 @@ SignUp.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
+const MapStateToProps = (state) => {
+    return {
+        UI: state.UI
+    }
+}
+
 const MapDispatchToProps = (dispatch) => {
     return {
         signUp: (state, history) => dispatch(signUp(state, history))
     }
 }
 
-export default connect(null, MapDispatchToProps)(withStyles(useStyles)(SignUp))
+export default connect(MapStateToProps, MapDispatchToProps)(withStyles(useStyles)(SignUp))
