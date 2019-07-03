@@ -6,9 +6,8 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import SignIn from '../auth/SignIn';
-import SignUp from '../auth/SignUp';
 import LoginSelectList from './LoginSelectList'
+import { connect } from 'react-redux'
 
 
 const drawerWidth = 240;
@@ -52,10 +51,9 @@ const useStyles = makeStyles(theme => ({
 
 const Layout = (props) => {
 
-	const { container, children } = props;
+	const { container, children, auth } = props;
 	const classes = useStyles();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-	const [auth, setAuth] = React.useState(false);
 
 	const handleDrawerToggle = (open) => event => {
 		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -73,78 +71,86 @@ const Layout = (props) => {
 			<Hidden xsDown implementation="css">
 				<div className={classes.toolbar} />
 			</Hidden>
-			<SignIn />
+			<LoginSelectList />
 		</div>
 	);
 
 	return (
-		<div className={classes.root}>
-			<CssBaseline />
-			{auth ? (
-				<React.Fragment>
-					<AppBar position="fixed" className={classes.appBar}>
-						<Toolbar>
+		<React.Fragment>
+			{/* {!auth && props.history.push('/SignIn')} */}
+			<div className={classes.root}>
+				<CssBaseline />
+				{auth ? (
+					<React.Fragment>
+						<AppBar position="fixed" className={classes.appBar}>
+							<Toolbar>
 
-							<IconButton
-								color="inherit"
-								aria-label="Open drawer"
-								edge="start"
-								onClick={handleDrawerToggle(true)}
-								className={classes.menuButton}
-							>
-								<MenuIcon />
-							</IconButton>
+								<IconButton
+									color="inherit"
+									aria-label="Open drawer"
+									edge="start"
+									onClick={handleDrawerToggle(true)}
+									className={classes.menuButton}
+								>
+									<MenuIcon />
+								</IconButton>
 
-							<Typography variant="h6" noWrap>
-								Money
+								<Typography variant="h6" noWrap>
+									Money
           					</Typography>
-						</Toolbar>
-					</AppBar>
+							</Toolbar>
+						</AppBar>
 
-					<nav className={classes.drawer} >
-						<Hidden smUp implementation="css">
-							<Drawer
-								container={container}
-								variant="temporary"
-								open={mobileOpen}
-								onClose={handleDrawerToggle(false)}
-								classes={{
-									paper: classes.drawerPaper,
-								}}
-								ModalProps={{
-									keepMounted: true,
-								}}
-							>
-								{drawer}
-							</Drawer>
-						</Hidden>
-						<Hidden xsDown implementation="css">
-							<Drawer
-								classes={{
-									paper: classes.drawerPaper,
-								}}
-								variant="permanent"
-								open
-							>
-								{drawer}
-							</Drawer>
-						</Hidden>
-					</nav>
-					<main className={classes.authContent}>
-					<div className={classes.toolbar} />
-					{children}
-					</main>
-				</React.Fragment>
-				
-			):(
-				<main className={classes.content}>
-					<div className={classes.toolbar} />
-					{children}
-				</main>
-			)}
-			
-		</div>
+						<nav className={classes.drawer} >
+							<Hidden smUp implementation="css">
+								<Drawer
+									container={container}
+									variant="temporary"
+									open={mobileOpen}
+									onClose={handleDrawerToggle(false)}
+									classes={{
+										paper: classes.drawerPaper,
+									}}
+									ModalProps={{
+										keepMounted: true,
+									}}
+								>
+									{drawer}
+								</Drawer>
+							</Hidden>
+							<Hidden xsDown implementation="css">
+								<Drawer
+									classes={{
+										paper: classes.drawerPaper,
+									}}
+									variant="permanent"
+									open
+								>
+									{drawer}
+								</Drawer>
+							</Hidden>
+						</nav>
+						<main className={classes.authContent}>
+							<div className={classes.toolbar} />
+							{children}
+						</main>
+					</React.Fragment>
+				) : (
+						<main className={classes.content}>
+							<div className={classes.toolbar} />
+							{children}
+						</main>
+					)}
+
+			</div>
+		</React.Fragment>
 	);
 }
 
-export default withRouter(Layout)
+const mapStateToProps = (state) => {
+	return {
+		auth: state.auth.auth
+	}
+}
+
+export default connect(mapStateToProps)(withRouter(Layout))

@@ -8,25 +8,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducers from './store/Reducers/rootreducers';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import MaterialUiTheme from './util/MaterialUiTheme';
+// import jwtDecode from 'jwt-decode';
+
 const middleware = [thunk]
 axios.defaults.baseURL = 'https://asia-northeast1-moneyapp-8c8fc.cloudfunctions.net/api';
 
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			light: '#e4fff1',
-			main: '#b2d3be',
-			dark: '#82a28e',
-			contrastText: '#5e6073',
-		},
-		secondary: {
-			light: '#ffffff',
-			main: '#f2f4d1',
-			dark: '#bfc1a0',
-			contrastText: '#5e6073',
-		},
-	},
-});
+const theme = createMuiTheme(MaterialUiTheme);
 
 const store = createStore(
 	rootReducers,
@@ -35,6 +23,14 @@ const store = createStore(
 		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	)
 );
+
+const token = localStorage.FBIdToken;
+if (token) {
+	//   const decodedToken = jwtDecode(token);
+	store.dispatch({ type: 'SET_AUTH' });
+	axios.defaults.headers.common['Authorization'] = token;
+
+}
 
 ReactDOM.render(
 	<MuiThemeProvider theme={theme}>

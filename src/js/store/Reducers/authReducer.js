@@ -1,5 +1,6 @@
 const initState = {
-    costLists: []
+    loading: false,
+    auth: false
 }
 
 const authReducer = (state = initState, action) => {
@@ -10,6 +11,16 @@ const authReducer = (state = initState, action) => {
         case 'LOGIN':
             console.log('success')
             return state
+        case 'LOGOUT':
+            return {
+                ...state,
+                auth: false
+            }
+        case 'SET_AUTH':
+            return {
+                ...state,
+                auth: true
+            }
         default:
             return state
     }

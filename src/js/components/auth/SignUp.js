@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { CssBaseline, Container, TextField, Button, Grid, Typography } from '@material-ui/core'
+import { CssBaseline, Container, TextField, Button, Grid, Typography, LinearProgress } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { signUp } from '../../store/Actions/authActions'
-import { Link } from 'react-router-dom'
+import { signUp, clearError } from '../../store/Actions/authActions'
+import { Link, Redirect } from 'react-router-dom'
 const useStyles = theme => ({
     container: {
         [theme.breakpoints.up('sm')]: {
             padding: theme.spacing(3),
-            backgroundColor: 'white',
+            backgroundColor: 'white'
         },
         height: 'auto',
         borderRadius: '10px',
@@ -32,27 +32,30 @@ class SignUp extends Component {
         confirmPassword: ''
     }
 
+    handleClick = () => {
+        this.props.clearError()
+    }
+
     handleChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
         });
+        this.props.clearError()
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.signUp(this.state, this.props.history);
-        // this.props.history.push("/");
     }
 
 
     render() {
-        const { classes } = this.props;
-        const errors = this.props.UI.error
-
-        console.log(errors)
+        const { classes, auth } = this.props;
+        const { errors, loading } = this.props.UI
 
         return (
             <React.Fragment>
+                {/* {auth && (<Redirect to='/' />)} */}
                 <CssBaseline />
                 <Container
                     maxWidth="sm"
@@ -73,6 +76,7 @@ class SignUp extends Component {
                                     fullWidth
                                     autoFocus
                                     error={errors.username ? true : false}
+                                    helperText={errors.username}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -85,6 +89,7 @@ class SignUp extends Component {
                                     margin="normal"
                                     fullWidth
                                     error={errors.email ? true : false}
+                                    helperText={errors.email}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -97,6 +102,7 @@ class SignUp extends Component {
                                     margin="normal"
                                     fullWidth
                                     error={errors.password ? true : false}
+                                    helperText={errors.password}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -109,10 +115,13 @@ class SignUp extends Component {
                                     margin="normal"
                                     fullWidth
                                     error={errors.confirmPassword ? true : false}
+                                    helperText={errors.confirmPassword}
                                 />
                             </Grid>
                         </Grid>
-
+                        {loading && (
+                            <LinearProgress />
+                        )}
                         <Grid item xs={12}>
                             <Button
                                 type="submit"
@@ -130,6 +139,7 @@ class SignUp extends Component {
                                 component={Link}
                                 to='/SignIn'
                                 fullWidth
+                                onClick={this.handleClick}
                             >
                                 Login
                                 </Button>
@@ -147,13 +157,15 @@ SignUp.propTypes = {
 
 const MapStateToProps = (state) => {
     return {
-        UI: state.UI
+        UI: state.UI,
+        auth: state.auth.auth
     }
 }
 
 const MapDispatchToProps = (dispatch) => {
     return {
-        signUp: (state, history) => dispatch(signUp(state, history))
+        signUp: (state, history) => dispatch(signUp(state, history)),
+        clearError: () => dispatch(clearError())
     }
 }
 
