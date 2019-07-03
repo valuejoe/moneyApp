@@ -4,18 +4,21 @@ import Layout from './Layout'
 import SignIn from '../auth/SignIn'
 import SignUp from '../auth/SignUp'
 import Books from '../dashboard/Books'
+import Statistics from '../dashboard/Statistics'
+
 
 class Main extends Component {
 	render() {
 		return (
 			<HashRouter>
-				<Layout>
 				<Switch>
 					<Route exact path='/SignIn' component={SignIn} />
 					<Route exact path='/SignUp' component={SignUp} />
-					<Route exact path='/Books' component={Books} />
+					<Layout>
+						<Route exact path='/' component={Books} />
+						<Route exact path='/statistics' component={Statistics} />
+					</Layout>
 				</Switch>
-				</Layout>
 			</HashRouter>
 
 		)

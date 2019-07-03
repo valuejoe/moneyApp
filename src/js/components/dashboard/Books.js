@@ -1,27 +1,55 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import CostList from './costList';
+import { CircularProgress, LinearProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(3, 2),
-  },
-}));
+const useStyles = theme => ({
+	progress: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginTop: '100px',
+		maxWidth: '700px',
+	}
+})
 
-export default function PaperSheet() {
-  const classes = useStyles();
+class Books extends Component {
 
-  return (
-    <div>
-      <Paper className={classes.root}>
-        <Typography variant="h5" component="h3">
-          This is a sheet of paper.
-        </Typography>
-        <Typography component="p">
-          Paper can be used to build surface or other elements for your application.
-        </Typography>
-      </Paper>
-    </div>
-  );
+	render() {
+		const { classes, auth, data, dataLoading } = this.props
+		console.log(dataLoading)
+		return (
+			<React.Fragment>
+				{!auth && (<Redirect to='/SignIn' />)}
+				{dataLoading ? (
+					<div className={classes.progress}>
+						<CircularProgress size={100} />
+					</div>
+				) : (
+						data.map((doc) => <CostList key={doc.id} costList={doc} />)
+					)}
+
+			</React.Fragment>
+		)
+	}
+
 }
+
+Books.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
+
+const mapStateToPorops = (state) => {
+	return {
+		auth: state.auth.auth,
+		data: state.data.costLists,
+		dataLoading: state.data.loading
+	}
+}
+
+
+
+export default connect(mapStateToPorops)(withStyles(useStyles)(Books))

@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
 	AppBar, Drawer, Hidden, IconButton,
 	CssBaseline, Toolbar, Typography
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import LoginSelectList from './LoginSelectList'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/styles';
+import { getCostList } from '../../store/Actions/costListActions';
 
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
 	root: {
 		display: 'flex',
 		height: '100vh',
@@ -47,40 +50,42 @@ const useStyles = makeStyles(theme => ({
 		flexGrow: 1,
 		padding: theme.spacing(3),
 	}
-}));
+});
 
-const Layout = (props) => {
-
-	const { container, children, auth } = props;
-	const classes = useStyles();
-	const [mobileOpen, setMobileOpen] = React.useState(false);
-
-	const handleDrawerToggle = (open) => event => {
-		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-			return;
-		}
-
-		setMobileOpen(open);
+class Layout extends Component {
+	componentDidMount() {
+		this.props.getCostList()
 	}
 
-	const drawer = (
-		<div
-			onClick={handleDrawerToggle(false)}
-			onKeyDown={handleDrawerToggle(false)}
-		>
-			<Hidden xsDown implementation="css">
-				<div className={classes.toolbar} />
-			</Hidden>
-			<LoginSelectList />
-		</div>
-	);
+	state = {
+		mobileOpen: false
+	}
+	render() {
+		const { classes, container, children, auth } = this.props;
 
-	return (
-		<React.Fragment>
-			{/* {!auth && props.history.push('/SignIn')} */}
-			<div className={classes.root}>
-				<CssBaseline />
-				{auth ? (
+		const handleDrawerToggle = (open) => event => {
+			if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+				return;
+			}
+			this.setState({ mobileOpen: open })
+		}
+
+		const drawer = (
+			<div
+				onClick={handleDrawerToggle(false)}
+				onKeyDown={handleDrawerToggle(false)}
+			>
+				<Hidden xsDown implementation="css">
+					<div className={classes.toolbar} />
+				</Hidden>
+				<LoginSelectList />
+			</div>
+		);
+
+		return (
+			<React.Fragment>
+				<div className={classes.root}>
+					<CssBaseline />
 					<React.Fragment>
 						<AppBar position="fixed" className={classes.appBar}>
 							<Toolbar>
@@ -97,7 +102,7 @@ const Layout = (props) => {
 
 								<Typography variant="h6" noWrap>
 									Money
-          					</Typography>
+								  </Typography>
 							</Toolbar>
 						</AppBar>
 
@@ -106,7 +111,7 @@ const Layout = (props) => {
 								<Drawer
 									container={container}
 									variant="temporary"
-									open={mobileOpen}
+									open={this.state.mobileOpen}
 									onClose={handleDrawerToggle(false)}
 									classes={{
 										paper: classes.drawerPaper,
@@ -135,17 +140,17 @@ const Layout = (props) => {
 							{children}
 						</main>
 					</React.Fragment>
-				) : (
-						<main className={classes.content}>
-							<div className={classes.toolbar} />
-							{children}
-						</main>
-					)}
+				</div>
+			</React.Fragment>
+		);
+	}
 
-			</div>
-		</React.Fragment>
-	);
 }
+
+
+Layout.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => {
 	return {
@@ -153,4 +158,14 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(withRouter(Layout))
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getCostList: () => dispatch(getCostList())
+	}
+}
+
+export default compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withRouter,
+	withStyles(useStyles)
+)(Layout)

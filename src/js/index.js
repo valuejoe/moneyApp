@@ -9,7 +9,8 @@ import rootReducers from './store/Reducers/rootreducers';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import MaterialUiTheme from './util/MaterialUiTheme';
-// import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
+import { logout } from './store/Actions/authActions'
 
 const middleware = [thunk]
 axios.defaults.baseURL = 'https://asia-northeast1-moneyapp-8c8fc.cloudfunctions.net/api';
@@ -25,11 +26,16 @@ const store = createStore(
 );
 
 const token = localStorage.FBIdToken;
-if (token) {
-	//   const decodedToken = jwtDecode(token);
-	store.dispatch({ type: 'SET_AUTH' });
-	axios.defaults.headers.common['Authorization'] = token;
 
+if (token) {
+	const tokenExpiredTime = jwtDecode(token).exp;
+	if (tokenExpiredTime * 1000 < new Date()) {
+		store.dispatch(logout());
+		window.location.href = '#/SignIn';
+	} else {
+		store.dispatch({ type: 'SET_AUTH' });
+		axios.defaults.headers.common['Authorization'] = token;
+	}
 }
 
 ReactDOM.render(

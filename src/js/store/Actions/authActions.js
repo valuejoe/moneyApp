@@ -42,12 +42,11 @@ export const signIn = (userData, history) => {
             axios
                 .post('/signIn', userData)
                 .then((res) => {
-                    console.log(res.data)
                     setAuthorizationHeader(res.data.token);
                     dispatch({ type: 'SET_AUTH' });
                     dispatch({ type: 'CLEAR_ERROR' });
                     dispatch({ type: 'STOPLOADING_UI' });
-                    history.push('/Books');
+                    history.push('/');
                 })
                 .catch((err) => {
                     dispatch({

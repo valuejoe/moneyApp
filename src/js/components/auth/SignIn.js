@@ -59,7 +59,7 @@ class SignIn extends Component {
         const { errors, loading } = this.props.UI;
         return (
             <React.Fragment>
-                {/* {auth && (<Redirect to="/" />)} */}
+                {auth && (<Redirect to="/" />)}
                 <main className={classes.root}>
                     <CssBaseline />
                     <Container

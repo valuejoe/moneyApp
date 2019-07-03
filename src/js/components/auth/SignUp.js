@@ -55,7 +55,7 @@ class SignUp extends Component {
 
         return (
             <React.Fragment>
-                {/* {auth && (<Redirect to='/' />)} */}
+                {auth && (<Redirect to='/' />)}
                 <CssBaseline />
                 <Container
                     maxWidth="sm"

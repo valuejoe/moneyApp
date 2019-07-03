@@ -16,7 +16,7 @@ const LoginSelectList = (props) => {
 			<ListItem
 				button
 				component={Link}
-				to='/Books'
+				to='/'
 			>
 				<ListItemIcon>
 					<Money />
@@ -26,11 +26,13 @@ const LoginSelectList = (props) => {
 			<Divider />
 			<ListItem
 				button
+				component={Link}
+				to='/statistics'
 			>
 				<ListItemIcon>
 					<InsertChart />
 				</ListItemIcon>
-				<ListItemText primary="分析" />
+				<ListItemText primary="統計" />
 			</ListItem>
 			<Divider />
 			<ListItem button onClick={handleClick}>
