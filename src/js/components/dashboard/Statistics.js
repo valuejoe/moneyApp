@@ -17,10 +17,8 @@ export default function PaperSheet() {
             <Paper className={classes.root}>
                 <Typography variant="h5" component="h3">
                     Statistics
-        </Typography>
-                <Typography component="p">
-                    Paper can be used to build surface or other elements for your application.
-        </Typography>
+                </Typography>
+
             </Paper>
         </div>
     );

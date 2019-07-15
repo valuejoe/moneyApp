@@ -11,16 +11,21 @@ import { signIn, clearError } from '../../store/Actions/authActions'
 
 const useStyles = theme => ({
     root: {
+        // [theme.breakpoints.up('sm')]: {
+        //     backgroundColor: '#f1f8e9',
+        // },
         flexGrow: 1,
+        height: '100vh',
+        padding: theme.spacing(3),
+        backgroundColor: '#f1f8e9',
     },
     container: {
-        height: 'auto',
-        borderRadius: '10px',
         [theme.breakpoints.up('sm')]: {
             padding: theme.spacing(3),
             backgroundColor: 'white'
         },
-
+        height: 'auto',
+        borderRadius: '10px',
         textAlign: 'center',
     },
     textField: {
@@ -30,6 +35,9 @@ const useStyles = theme => ({
     button: {
         margin: theme.spacing(5, 0, 2),
     },
+    title: {
+        color: '#82a28e'
+    }
 })
 
 class SignIn extends Component {
@@ -60,13 +68,13 @@ class SignIn extends Component {
         return (
             <React.Fragment>
                 {auth && (<Redirect to="/" />)}
-                <main className={classes.root}>
+                <div className={classes.root}>
                     <CssBaseline />
                     <Container
                         maxWidth="sm"
                         className={classes.container}
                     >
-                        <Typography variant="h2" component="h2" gutterBottom color="primary">
+                        <Typography variant="h2" component="h2" gutterBottom className={classes.title}>
                             Money
                             </Typography>
                         <form onSubmit={this.handleSubmit}>
@@ -138,7 +146,7 @@ class SignIn extends Component {
                             </Grid>
                         </form>
                     </Container>
-                </main>
+                </div>
             </React.Fragment>
         )
     }

@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
-import { getCostList } from '../../store/Actions/costListActions';
+import { getAllCostList } from '../../store/Actions/dataActions';
 
 
 const drawerWidth = 240;
@@ -21,7 +21,7 @@ const useStyles = theme => ({
 		height: '100vh',
 	},
 	drawer: {
-		[theme.breakpoints.up('sm')]: {
+		[theme.breakpoints.up('lg')]: {
 			width: drawerWidth,
 			flexShrink: 0,
 		},
@@ -31,7 +31,7 @@ const useStyles = theme => ({
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
-		[theme.breakpoints.up('sm')]: {
+		[theme.breakpoints.up('lg')]: {
 			display: 'none',
 		},
 	},
@@ -39,22 +39,16 @@ const useStyles = theme => ({
 	drawerPaper: {
 		width: drawerWidth,
 	},
-	content: {
-		[theme.breakpoints.up('sm')]: {
-			backgroundColor: '#f1f8e9',
-		},
-		flexGrow: 1,
-		padding: theme.spacing(3),
-	},
 	authContent: {
 		flexGrow: 1,
-		padding: theme.spacing(3),
+		backgroundColor: '#f1f8e9',
+		padding: theme.spacing(1)
 	}
 });
 
 class Layout extends Component {
 	componentDidMount() {
-		this.props.getCostList()
+		this.props.getAllCostList()
 	}
 
 	state = {
@@ -75,7 +69,7 @@ class Layout extends Component {
 				onClick={handleDrawerToggle(false)}
 				onKeyDown={handleDrawerToggle(false)}
 			>
-				<Hidden xsDown implementation="css">
+				<Hidden mdDown implementation="css">
 					<div className={classes.toolbar} />
 				</Hidden>
 				<LoginSelectList />
@@ -107,7 +101,7 @@ class Layout extends Component {
 						</AppBar>
 
 						<nav className={classes.drawer} >
-							<Hidden smUp implementation="css">
+							<Hidden lgUp implementation="css">
 								<Drawer
 									container={container}
 									variant="temporary"
@@ -123,7 +117,7 @@ class Layout extends Component {
 									{drawer}
 								</Drawer>
 							</Hidden>
-							<Hidden xsDown implementation="css">
+							<Hidden mdDown implementation="css">
 								<Drawer
 									classes={{
 										paper: classes.drawerPaper,
@@ -160,7 +154,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getCostList: () => dispatch(getCostList())
+		getAllCostList: () => dispatch(getAllCostList())
 	}
 }
 

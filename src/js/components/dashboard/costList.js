@@ -1,52 +1,72 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid } from '@material-ui/core';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes, { object } from 'prop-types';
+import { withStyles } from '@material-ui/styles';
+import { Box } from '@material-ui/core'
+import Cost from '../layout/Cost';
 
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        padding: theme.spacing(1, 5),
-        maxWidth: '700px',
-        marginBottom: '5px'
+const useStyles = theme => ({
+    costListTitle: {
+        padding: theme.spacing(1, 2),
+        margin: theme.spacing(1, 0),
+        backgroundColor: '#bfc1a0',
     },
-}));
+    costList: {
+        height: '77vh',
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+    },
+})
 
-function CostList(props) {
-    const classes = useStyles();
-    const { costList } = props
-    const { month, dt } = splitDate(costList.date)
+const CostListTitle = (props) => {
+    const { month, date, day } = props.costList
     return (
         <React.Fragment>
-            <Paper className={classes.root}>
-                <Grid container>
-                    <Grid item xs={4}>
-                        <Typography variant="h5" component="h6" color="textSecondary">
-                            {costList.category}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography variant="h5" component="h3" align="center" color="textSecondary">
-                            {costList.cost} NT$
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography variant="h5" component="h3" align="right" color="textSecondary">
-                            {month}/{dt}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Paper>
+            <Box fontWeight="fontWeightBold">
+                {month}月{date}日 星期{day}
+            </Box>
         </React.Fragment>
-    );
+    )
 }
 
-const splitDate = (date) => {
-    let newdate = new Date(date);
-    let year = newdate.getFullYear();
-    let month = newdate.getMonth() + 1;
-    let dt = newdate.getDate();
-    // console.log(`${year}年${month}月${dt}日`)
-    return { year, month, dt }
+class CostList extends Component {
+    render() {
+        const { classes, isOpenCostList, data, handleCostList, filterCostList } = this.props
+        return (
+            <React.Fragment>
+                {isOpenCostList &&
+                    <div className={classes.costListTitle}>
+                        {
+                            filterCostList.filter(doc => doc
+                                .id === handleCostList)
+                                .map(doc => <CostListTitle key={doc} costList={doc} />)
+                        }
+                    </div>
+                }
+                <div className={classes.costList}>
+
+                    {
+                        data
+                            .filter(doc => new Date(doc.date).toDateString() === handleCostList)
+                            .map(doc => <Cost key={doc.id} costList={doc} />)
+                    }
+                </div>
+            </React.Fragment >
+        )
+    }
 }
 
-export default (CostList)
+CostList.propTypes = {
+    classes: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = (state) => {
+    return {
+        isOpenCostList: state.data.isOpenCostList,
+        data: state.data.costLists,
+        handleCostList: state.data.handleCostList,
+        filterCostList: state.data.filterCostList,
+    }
+}
+
+export default connect(mapStateToProps)(withStyles(useStyles)(CostList))

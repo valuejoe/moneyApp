@@ -1,6 +1,6 @@
 const initState = {
     errors: '',
-    loading: false
+    loading: false,
 }
 
 const componentReducer = (state = initState, action) => {

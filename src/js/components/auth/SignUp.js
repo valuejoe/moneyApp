@@ -6,6 +6,12 @@ import { connect } from 'react-redux';
 import { signUp, clearError } from '../../store/Actions/authActions'
 import { Link, Redirect } from 'react-router-dom'
 const useStyles = theme => ({
+    root: {
+        flexGrow: 1,
+        height: '100vh',
+        padding: theme.spacing(3),
+        backgroundColor: '#f1f8e9',
+    },
     container: {
         [theme.breakpoints.up('sm')]: {
             padding: theme.spacing(3),
@@ -56,96 +62,98 @@ class SignUp extends Component {
         return (
             <React.Fragment>
                 {auth && (<Redirect to='/' />)}
-                <CssBaseline />
-                <Container
-                    maxWidth="sm"
-                    className={classes.container}
-                >
-                    <Typography variant="h5">
-                        Sign Up
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <Container
+                        maxWidth="sm"
+                        className={classes.container}
+                    >
+                        <Typography variant="h5">
+                            Sign Up
                     </Typography>
-                    <form onSubmit={this.handleSubmit}>
-                        <Grid container spacing={0}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    onChange={this.handleChange}
-                                    variant="outlined"
-                                    id="username"
-                                    label="Username"
-                                    margin="normal"
-                                    fullWidth
-                                    autoFocus
-                                    error={errors.username ? true : false}
-                                    helperText={errors.username}
-                                />
+                        <form onSubmit={this.handleSubmit}>
+                            <Grid container spacing={0}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        onChange={this.handleChange}
+                                        variant="outlined"
+                                        id="username"
+                                        label="Username"
+                                        margin="normal"
+                                        fullWidth
+                                        autoFocus
+                                        error={errors.username ? true : false}
+                                        helperText={errors.username}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        type="email"
+                                        onChange={this.handleChange}
+                                        variant="outlined"
+                                        id="email"
+                                        label="Email Address"
+                                        margin="normal"
+                                        fullWidth
+                                        error={errors.email ? true : false}
+                                        helperText={errors.email}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        type="password"
+                                        onChange={this.handleChange}
+                                        variant="outlined"
+                                        id="password"
+                                        label="Password"
+                                        margin="normal"
+                                        fullWidth
+                                        error={errors.password ? true : false}
+                                        helperText={errors.password}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        type="password"
+                                        onChange={this.handleChange}
+                                        variant="outlined"
+                                        id="confirmPassword"
+                                        label="Confirm Password"
+                                        margin="normal"
+                                        fullWidth
+                                        error={errors.confirmPassword ? true : false}
+                                        helperText={errors.confirmPassword}
+                                    />
+                                </Grid>
                             </Grid>
+                            {loading && (
+                                <LinearProgress />
+                            )}
                             <Grid item xs={12}>
-                                <TextField
-                                    type="email"
-                                    onChange={this.handleChange}
-                                    variant="outlined"
-                                    id="email"
-                                    label="Email Address"
-                                    margin="normal"
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    className={classes.button}
+                                    color="secondary"
                                     fullWidth
-                                    error={errors.email ? true : false}
-                                    helperText={errors.email}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    type="password"
-                                    onChange={this.handleChange}
-                                    variant="outlined"
-                                    id="password"
-                                    label="Password"
-                                    margin="normal"
-                                    fullWidth
-                                    error={errors.password ? true : false}
-                                    helperText={errors.password}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    type="password"
-                                    onChange={this.handleChange}
-                                    variant="outlined"
-                                    id="confirmPassword"
-                                    label="Confirm Password"
-                                    margin="normal"
-                                    fullWidth
-                                    error={errors.confirmPassword ? true : false}
-                                    helperText={errors.confirmPassword}
-                                />
-                            </Grid>
-                        </Grid>
-                        {loading && (
-                            <LinearProgress />
-                        )}
-                        <Grid item xs={12}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                className={classes.button}
-                                color="secondary"
-                                fullWidth
-                            >
-                                Submit
+                                >
+                                    Submit
                                 </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                variant="contained"
-                                component={Link}
-                                to='/SignIn'
-                                fullWidth
-                                onClick={this.handleClick}
-                            >
-                                Login
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="contained"
+                                    component={Link}
+                                    to='/SignIn'
+                                    fullWidth
+                                    onClick={this.handleClick}
+                                >
+                                    Login
                                 </Button>
-                        </Grid>
-                    </form>
-                </Container>
+                            </Grid>
+                        </form>
+                    </Container>
+                </div>
             </React.Fragment>
         )
     }

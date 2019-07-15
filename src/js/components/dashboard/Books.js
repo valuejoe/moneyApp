@@ -1,41 +1,46 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import CostList from './costList';
-import { CircularProgress, LinearProgress } from '@material-ui/core';
+import PropTypes, { object } from 'prop-types';
+import { Grid, Hidden } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import PropTypes from 'prop-types';
+import { filterData, closeCostLists } from '../../store/Actions/dataActions';
+import TabBar from '../layout/TabBar'
+import DateList from './DateList'
+import CostList from './CostList'
 
 const useStyles = theme => ({
-	progress: {
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		marginTop: '100px',
-		maxWidth: '700px',
-	}
+	costList: {
+		flexGrow: 1,
+		height: '85vh',
+	},
 })
 
 class Books extends Component {
-
+	componentDidMount() {
+		this.props.filterData()
+	}
 	render() {
-		const { classes, auth, data, dataLoading } = this.props
-		console.log(dataLoading)
+		const { classes, auth } = this.props
 		return (
 			<React.Fragment>
 				{!auth && (<Redirect to='/SignIn' />)}
-				{dataLoading ? (
-					<div className={classes.progress}>
-						<CircularProgress size={100} />
-					</div>
-				) : (
-						data.map((doc) => <CostList key={doc.id} costList={doc} />)
-					)}
-
+				<Hidden smDown>
+					<Grid container spacing={2} className={classes.costList}>
+						<Grid item xs={6} >
+							<DateList />
+						</Grid>
+						<Grid item xs={6} >
+							<CostList />
+						</Grid>
+					</Grid>
+				</Hidden>
+				<Hidden mdUp>
+					<TabBar />
+				</Hidden>
 			</React.Fragment>
 		)
 	}
-
 }
 
 Books.propTypes = {
@@ -45,11 +50,13 @@ Books.propTypes = {
 const mapStateToPorops = (state) => {
 	return {
 		auth: state.auth.auth,
-		data: state.data.costLists,
-		dataLoading: state.data.loading
 	}
 }
 
+const mapDispatchToPorops = (dispatch) => {
+	return {
+		filterData: () => dispatch(filterData()),
+	}
+}
 
-
-export default connect(mapStateToPorops)(withStyles(useStyles)(Books))
+export default connect(mapStateToPorops, mapDispatchToPorops)(withStyles(useStyles)(Books))
