@@ -49,7 +49,7 @@ class AddCost extends Component {
         this.props.cancelAdd()
     }
     render() {
-        const { classes } = this.props
+        const { classes, errors } = this.props
         const { date, category, cost } = this.state
         return (
             <React.Fragment>
@@ -68,6 +68,8 @@ class AddCost extends Component {
                                         value={date}
                                         onChange={date => this.handleDateChange(date)}
                                         format="yyyy/MM/dd"
+                                        error={errors.date ? true : false}
+                                        invalidDateMessage={errors.date ? errors.date : false}
                                     />
                                 </MuiPickersUtilsProvider>
                             </Grid>
@@ -76,10 +78,11 @@ class AddCost extends Component {
                                     label="項目名稱"
                                     fullWidth
                                     onChange={this.handleChange('title')}
+                                    error={errors.title ? true : false}
                                 />
                             </Grid>
                             <Grid item xs={3}>
-                                <FormControl>
+                                <FormControl error={errors.category ? true : false}>
                                     <InputLabel>分類</InputLabel>
                                     <Select
                                         value={category}
@@ -105,6 +108,7 @@ class AddCost extends Component {
                                     InputProps={{
                                         inputComponent: NumberFormatCustom,
                                     }}
+                                    error={errors.cost ? true : false}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -171,6 +175,12 @@ AddCost.propTypes = {
     classes: PropTypes.object.isRequired,
 }
 
+const mapStateToProps = (state) => {
+    return {
+        errors: state.UI.errors
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         cancelAdd: () => dispatch(cancelAdd()),
@@ -178,6 +188,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(useStyles)(AddCost));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(AddCost));
 
 

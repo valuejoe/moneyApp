@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
-import { getAllCostList } from '../../store/Actions/dataActions';
+import { getAllCostList, filterData } from '../../store/Actions/dataActions';
 
 
 const drawerWidth = 240;
@@ -48,7 +48,8 @@ const useStyles = theme => ({
 
 class Layout extends Component {
 	componentDidMount() {
-		this.props.getAllCostList()
+		this.props.getAllCostList();
+		this.props.filterData();
 	}
 
 	state = {
@@ -83,7 +84,6 @@ class Layout extends Component {
 					<React.Fragment>
 						<AppBar position="fixed" className={classes.appBar}>
 							<Toolbar>
-
 								<IconButton
 									color="inherit"
 									aria-label="Open drawer"
@@ -141,7 +141,6 @@ class Layout extends Component {
 
 }
 
-
 Layout.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
@@ -154,7 +153,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getAllCostList: () => dispatch(getAllCostList())
+		getAllCostList: () => dispatch(getAllCostList()),
+		filterData: () => dispatch(filterData())
 	}
 }
 

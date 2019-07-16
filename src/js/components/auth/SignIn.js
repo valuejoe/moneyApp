@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     CssBaseline, Container, TextField, Button,
-    Grid, Typography, Paper, LinearProgress
+    Grid, Typography, LinearProgress
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -11,9 +11,6 @@ import { signIn, clearError } from '../../store/Actions/authActions'
 
 const useStyles = theme => ({
     root: {
-        // [theme.breakpoints.up('sm')]: {
-        //     backgroundColor: '#f1f8e9',
-        // },
         flexGrow: 1,
         height: '100vh',
         padding: theme.spacing(3),
@@ -59,7 +56,6 @@ class SignIn extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.signIn(this.state, this.props.history);
-
     }
 
     render() {

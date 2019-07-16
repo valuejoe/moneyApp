@@ -30,14 +30,12 @@ const useStyles = theme => ({
 })
 
 class DateList extends Component {
-
     handleClick = (id) => {
         this.props.openCostLists(id)
         this.props.changeTabsValue(1)
     }
 
     handleAddClick = () => {
-        console.log('success')
         this.props.openAddList()
     }
 
@@ -102,7 +100,7 @@ DateList.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        dataLoading: state.UI.loading,
+        dataLoading: state.data.loading,
         filterCostList: state.data.filterCostList,
         isOpenAddList: state.data.isOpenAddList,
     }

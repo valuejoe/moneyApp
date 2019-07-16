@@ -63,6 +63,7 @@ export const logout = () => {
         localStorage.removeItem('FBIdToken');
         delete axios.defaults.headers.common['Authorization'];
         dispatch({ type: 'LOGOUT' });
+        dispatch({ type: 'INIT_STATE' });
     }
 }
 

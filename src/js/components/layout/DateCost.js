@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Grid, Hidden } from '@material-ui/core';
 
-
 function DateCost(props) {
     const { sum, date, year, month, day } = props.costList
 

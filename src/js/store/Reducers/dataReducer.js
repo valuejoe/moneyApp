@@ -1,29 +1,6 @@
-const initState = {
-    costLists: [
-        { id: 0, title: '雞排', category: '飲食', cost: 65, date: '2019-07-03' },
-        { id: 1, title: '早餐', category: '飲食', cost: 60, date: '2019-07-03' },
-        { id: 2, title: '早餐', category: '飲食', cost: 80, date: '2019-07-02' },
-        { id: 3, title: '午餐', category: '飲食', cost: 100, date: '2019-07-02' },
-        { id: 4, title: '晚餐', category: '飲食', cost: 150, date: '2019-07-02' },
-        { id: 5, title: '早餐', category: '飲食', cost: 75, date: '2019-07-01' },
-        { id: 6, title: '午餐', category: '飲食', cost: 80, date: '2019-07-01' },
-        { id: 7, title: '晚餐', category: '飲食', cost: 200, date: '2019-07-01' },
-        { id: 8, title: '晚餐', category: '飲食', cost: 200, date: '2019-06-29' },
-        { id: 9, title: '晚餐', category: '飲食', cost: 200, date: '2019-06-29' },
-        { id: 10, title: '晚餐', category: '飲食', cost: 200, date: '2019-06-28' },
-        { id: 11, title: '晚餐', category: '飲食', cost: 200, date: '2019-06-28' },
-        { id: 12, title: '晚餐', category: '飲食', cost: 200, date: '2019-06-28' },
-        { id: 13, title: '咖啡', category: '飲食', cost: 100, date: '2019-07-06' },
-        { id: 14, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 15, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 16, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 17, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 18, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 19, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 20, title: '拉麵', category: '飲食', cost: 115, date: '2019-07-05' },
-        { id: 22, title: '墨西哥起司雞肉餅', category: '飲食', cost: 10000000, date: '2018-12-28' },
 
-    ],
+const initState = {
+    costLists: [],
     filterCostList: [],
     loading: false,
     isOpenCostList: false,
@@ -33,7 +10,6 @@ const initState = {
     handleCostListsId: 22
 }
 
-
 const dataReducer = (state = initState, action) => {
     switch (action.type) {
         case 'LOADING_DATA':
@@ -42,23 +18,23 @@ const dataReducer = (state = initState, action) => {
                 loading: true
             }
         case 'SET_DATA':
-            // let newCostLists = action.payload;
-            // newCostLists.sort(function (a, b) {
-            //     var dateA = new Date(a.date), dateB = new Date(b.date);
-            //     return dateB - dateA;
-            // });
+            let newCostLists = action.payload;
+            newCostLists.sort(function (a, b) {
+                var dateA = new Date(a.date), dateB = new Date(b.date);
+                return dateB - dateA;
+            });
 
             return {
                 ...state,
-                loading: false,
-                // costLists: newCostLists
+                costLists: newCostLists
             }
         case 'FILTER_DATA':
             let filterData = dateFilter(state.costLists)
             addDateCostSum(filterData, state.costLists)
             return {
                 ...state,
-                filterCostList: filterData
+                filterCostList: filterData,
+                loading: false
             }
         case 'DELETE_COSTLIST':
             let { deleteData, isDateExist } = deleteCostListFunctions(state.costLists, action.payload.id, action.payload.date)
@@ -70,7 +46,8 @@ const dataReducer = (state = initState, action) => {
                 ...state,
                 costLists: deleteData,
                 isOpenCostList: isDateExist,
-                tabsValue: newTabsValue
+                tabsValue: newTabsValue,
+                loading: false,
             }
         case 'OPEN_COSTLISTS':
             return {
@@ -94,13 +71,15 @@ const dataReducer = (state = initState, action) => {
                 isOpenAddList: false
             }
         case 'ADD_COSTLIST':
-            console.log(action.payload.value)
-            let { addCostList } = addCostListFunctions(action.payload.value, state.handleCostListsId)
+            let { addCostList } = addCostListFunctions(action.payload, state.handleCostListsId)
             return {
                 ...state,
                 costLists: [...state.costLists, addCostList],
-                handleCostListsId: state.handleCostListsId + 1
+                handleCostListsId: state.handleCostListsId + 1,
+                loading: false,
             }
+        case 'INIT_STATE':
+            return initState
         default:
             return state;
     }
@@ -116,7 +95,6 @@ const dateFilter = (value) => {
     });
     let newData = [];
     while (costLists.length !== 0) {
-        console.log(costLists)
         let dateString = new Date(costLists[0].date).toDateString();
         let filterList = costLists.filter(doc => new Date(doc.date).toDateString() === dateString)
         const sum = addDateCostSum(filterList)
@@ -172,15 +150,8 @@ const deleteCostListFunctions = (data, id, date) => {
 }
 
 const addCostListFunctions = (value, id) => {
-    let newData = { id: id + 1 }
-    newData = {
-        ...newData,
-        date: new Date(value.date).toISOString(),
-        title: value.title,
-        category: value.category,
-        cost: parseInt(value.cost, 10),
-        comment: value.comment
-    }
+    let newData = { id: id + 1, ...value }
+
     return {
         addCostList: newData
     }

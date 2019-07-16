@@ -20,7 +20,6 @@ function TabBar(props) {
     const { value } = props
     const theme = useTheme();
     function handleChange(event, newValue) {
-        console.log(newValue)
         props.changeTabsValue(newValue)
     }
     function handleChangeIndex(index) {

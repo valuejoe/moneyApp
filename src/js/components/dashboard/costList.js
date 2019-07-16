@@ -35,23 +35,25 @@ class CostList extends Component {
         return (
             <React.Fragment>
                 {isOpenCostList &&
-                    <div className={classes.costListTitle}>
-                        {
-                            filterCostList.filter(doc => doc
-                                .id === handleCostList)
-                                .map(doc => <CostListTitle key={doc} costList={doc} />)
-                        }
-                    </div>
-                }
-                <div className={classes.costList}>
+                    <React.Fragment>
+                        <div className={classes.costListTitle}>
+                            {
+                                filterCostList.filter(doc => doc
+                                    .id === handleCostList)
+                                    .map(doc => <CostListTitle key={doc} costList={doc} />)
+                            }
+                        </div>
+                        <div className={classes.costList}>
 
-                    {
-                        data
-                            .filter(doc => new Date(doc.date).toDateString() === handleCostList)
-                            .map(doc => <Cost key={doc.id} costList={doc} />)
-                    }
-                </div>
-            </React.Fragment >
+                            {
+                                data
+                                    .filter(doc => new Date(doc.date).toDateString() === handleCostList)
+                                    .map(doc => <Cost key={doc.id} costList={doc} />)
+                            }
+                        </div>
+                    </React.Fragment>
+                }
+            </React.Fragment>
         )
     }
 }

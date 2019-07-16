@@ -6,7 +6,6 @@ import SignUp from '../auth/SignUp'
 import Books from '../dashboard/Books'
 import Statistics from '../dashboard/Statistics'
 
-
 class Main extends Component {
 	render() {
 		return (
