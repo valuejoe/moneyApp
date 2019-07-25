@@ -6,16 +6,16 @@
 [Money App demo site](https://valuejoe.github.io/moneyApp/)
 
 #### 登入、註冊、登出展示
- ![Alt text](./img/MoneyApp - login&signUp&logout.gif)
+ ![Alt text](./img/login&signUp&logout.gif)
 
 #### 新增帳目、刪除帳目展示
- ![Alt text](./img/MoneyApp - addCost&DeleteCost.gif)
+ ![Alt text](./img/addCost&DeleteCost.gif)
 
  #### 統計頁面展示
- ![Alt text](./img/MoneyApp - statistics.gif)
- 
+ ![Alt text](./img/statistics.gif)
+
  #### 手機畫面展示
- ![Alt text](./img/MoneyApp - mobileDemo.gif)
+ ![Alt text](./img/mobileDemo.gif)
 
 ## 基本功能
 - 註冊
