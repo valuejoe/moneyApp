@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import { Paper, TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem, Input, Box } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -28,16 +28,16 @@ class AddCost extends Component {
         comment: ''
     }
 
-    handleDateChange = (date) => {
-        this.setState({
-            date: date
-        })
-    }
-
-    handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value
-        });
+    handleChange = (e, name) => {
+        if (name === "date") {
+            this.setState({
+                [name]: e
+            })
+        } else {
+            this.setState({
+                [name]: e.target.value
+            })
+        }
     }
 
     handleSubmit = (e) => {
@@ -64,9 +64,10 @@ class AddCost extends Component {
                             <Grid item xs={12}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
+                                        name="date"
                                         placeholder='yyyy/MM/dd'
                                         value={date}
-                                        onChange={date => this.handleDateChange(date)}
+                                        onChange={(e) => this.handleChange(e, "date")}
                                         format="yyyy/MM/dd"
                                         error={errors.date ? true : false}
                                         invalidDateMessage={errors.date ? errors.date : false}
@@ -75,9 +76,10 @@ class AddCost extends Component {
                             </Grid>
                             <Grid item xs={9}>
                                 <TextField
+                                    name="title"
                                     label="項目名稱"
                                     fullWidth
-                                    onChange={this.handleChange('title')}
+                                    onChange={(e) => this.handleChange(e, "title")}
                                     error={errors.title ? true : false}
                                 />
                             </Grid>
@@ -85,9 +87,10 @@ class AddCost extends Component {
                                 <FormControl error={errors.category ? true : false}>
                                     <InputLabel>分類</InputLabel>
                                     <Select
+                                        name="category"
                                         value={category}
                                         input={<Input name="category" id="category" />}
-                                        onChange={this.handleChange('category')}
+                                        onChange={(e) => this.handleChange(e, "category")}
                                     >
                                         <MenuItem value="飲食">飲食</MenuItem>
                                         <MenuItem value="交通">交通</MenuItem>
@@ -102,9 +105,9 @@ class AddCost extends Component {
                                     className={classes.formControl}
                                     label="金額"
                                     value={cost}
-                                    onChange={this.handleChange('cost')}
                                     id="cost"
                                     name="cost"
+                                    onChange={(e) => this.handleChange(e, "cost")}
                                     InputProps={{
                                         inputComponent: NumberFormatCustom,
                                     }}
@@ -115,7 +118,7 @@ class AddCost extends Component {
                                 <TextField
                                     label="註解"
                                     fullWidth
-                                    onChange={this.handleChange('comment')}
+                                    onChange={(e) => this.handleChange(e, "comment")}
                                 />
                             </Grid>
                             <Grid item xs={6} className={classes.button}>

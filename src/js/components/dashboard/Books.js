@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Grid, Hidden } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import TabBar from '../layout/TabBar'
-import DateList from './DateList'
-import CostList from './CostList'
+import DateList from '../books/DateList'
+import CostList from '../books/CostList'
 
 const useStyles = theme => ({
 	costList: {

@@ -5,8 +5,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Tabs, Tab, Typography, AppBar } from '@material-ui/core';
 import { changeTabsValue } from '../../store/Actions/dataActions'
 
-import DateList from '../dashboard/DateList'
-import CostList from '../dashboard/CostList'
+import DateList from '../books/DateList'
+import CostList from '../books/CostList'
 const useStyles = makeStyles({
     appbar: {
         flexGrow: 1,

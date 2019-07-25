@@ -1,4 +1,4 @@
-
+import testData from '../../../testData'
 const initState = {
     costLists: [],
     filterCostList: [],
@@ -141,7 +141,7 @@ const deleteCostListFunctions = (data, id, date) => {
 
     let isDateExist = false
     newData.map(doc => {
-        if (doc.date === date) {
+        if (new Date(doc.date).toDateString() === new Date(date).toDateString()) {
             return isDateExist = true
         }
     })

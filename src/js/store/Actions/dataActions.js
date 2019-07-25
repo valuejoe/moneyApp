@@ -113,7 +113,7 @@ const checkAddList = (value) => {
     let errors = {}
     let newData = value
     if (value.title === '') errors.title = '項目名稱未填寫'
-    if (value.date == "Invalid Date") {
+    if (value.date == "Invalid Date" || value.date == null) {
         errors.date = '格式錯誤'
     } else {
         newData = { ...newData, date: new Date(value.date).toDateString() }

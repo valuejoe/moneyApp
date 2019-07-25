@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import { Box } from '@material-ui/core'
-import Cost from '../layout/Cost';
+import Cost from './Cost';
 
 const useStyles = theme => ({
     costListTitle: {
@@ -16,18 +16,11 @@ const useStyles = theme => ({
         overflowY: 'scroll',
         overflowX: 'hidden',
     },
-})
+    box: {
+        color: '#5e6073'
+    }
 
-const CostListTitle = (props) => {
-    const { month, date, day } = props.costList
-    return (
-        <React.Fragment>
-            <Box fontWeight="fontWeightBold">
-                {month}月{date}日 星期{day}
-            </Box>
-        </React.Fragment>
-    )
-}
+})
 
 class CostList extends Component {
     render() {
@@ -40,7 +33,11 @@ class CostList extends Component {
                             {
                                 filterCostList.filter(doc => doc
                                     .id === handleCostList)
-                                    .map(doc => <CostListTitle key={doc} costList={doc} />)
+                                    .map(doc => (
+                                        <Box key={doc.id} fontWeight="fontWeightBold" className={classes.box}>
+                                            {doc.month}月{doc.date}日 星期{doc.day}
+                                        </Box>
+                                    ))
                             }
                         </div>
                         <div className={classes.costList}>

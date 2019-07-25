@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes, { object } from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import { CircularProgress, Paper, ButtonBase, Typography } from '@material-ui/core';
-import DataCost from '../layout/DateCost';
+import Icon from '@material-ui/core/Icon';
+import DataCost from './DateCost'
 import AddCost from './AddCost';
 import { openCostLists, changeTabsValue, openAddList } from '../../store/Actions/dataActions'
 
@@ -62,13 +63,16 @@ class DateList extends Component {
                                                     className={classes.button}
                                                     onClick={this.handleAddClick}
                                                 >
+                                                    <Icon color="disabled" style={{ fontSize: 30 }}>
+                                                        add_circle
+                                                        </Icon>
                                                     <Typography
                                                         variant="h5"
                                                         component="h6"
                                                         align="left"
                                                         color="textSecondary"
                                                     >
-                                                        +Add
+                                                        Add
                                                     </Typography>
                                                 </ButtonBase>
                                             </Paper>
