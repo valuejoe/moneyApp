@@ -5,16 +5,16 @@
 
 [Money App demo site](https://valuejoe.github.io/moneyApp/)
 
-#### 登入、註冊、登出展示
+#### 登入、註冊、登出
  ![Alt text](./img/login&signUp&logout.gif)
 
-#### 新增帳目、刪除帳目展示
+#### 新增帳目、刪除帳目
  ![Alt text](./img/addCost&DeleteCost.gif)
 
- #### 統計頁面展示
+ #### 統計頁面
  ![Alt text](./img/statistics.gif)
 
- #### 手機畫面展示
+ #### 手機畫面
  ![Alt text](./img/mobileDemo.gif)
 
 ## 功能
@@ -28,10 +28,11 @@
 
 ## 主要運用工具
 - webpack：主要的開發打包工具
+- ES6：系統開發語言
 - react：本系統的前端框架
-- redux：本地端資料傳輸的API
+- redux：網頁本地端資料傳輸的API
 - material-ui：系統UI框架
-- firebase：主要的資料庫系統
+- firebase：後端使用的資料庫系統
 - react-swipeable-views：呈現螢幕左右滑動換頁的效果
 - recharts：統計表所使用的API
 - axios：用來處理系統與firebase API的連接
