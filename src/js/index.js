@@ -15,13 +15,14 @@ import { logout } from './store/Actions/authActions'
 const middleware = [thunk]
 axios.defaults.baseURL = 'https://asia-northeast1-moneyapp-8c8fc.cloudfunctions.net/api';
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const theme = createMuiTheme(MaterialUiTheme);
 
 const store = createStore(
 	rootReducers,
-	compose(
-		applyMiddleware(...middleware),
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+	composeEnhancers(
+		applyMiddleware(...middleware)
 	)
 );
 
