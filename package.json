@@ -1,11 +1,14 @@
 {
-  "name": "webpack_react_init_2019",
+  "name": "moneyapp",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://valuejoe.github.io/moneyApp/",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
