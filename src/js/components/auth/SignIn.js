@@ -11,14 +11,17 @@ import { signIn, clearError } from '../../store/Actions/authActions'
 
 const useStyles = theme => ({
     root: {
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(12),
+        },
         flexGrow: 1,
         height: '100vh',
-        padding: theme.spacing(3),
+        padding: theme.spacing(6, 3, 3, 3),
         backgroundColor: '#f1f8e9',
     },
     container: {
         [theme.breakpoints.up('sm')]: {
-            padding: theme.spacing(3),
+            padding: theme.spacing(6, 6, 7, 6),
             backgroundColor: 'white'
         },
         height: 'auto',
@@ -26,14 +29,16 @@ const useStyles = theme => ({
         textAlign: 'center',
     },
     textField: {
-        width: 'auto',
+        // width: 'auto',
         flexGrow: 1,
+        margin: theme.spacing(2, 0, 5, 0)
     },
     button: {
-        margin: theme.spacing(5, 0, 2),
+        padding: theme.spacing(1),
     },
     title: {
-        color: '#82a28e'
+        color: '#82a28e',
+        marginBottom: theme.spacing(3)
     }
 })
 
@@ -71,7 +76,7 @@ class SignIn extends Component {
                         className={classes.container}
                     >
                         <Typography variant="h2" component="h2" gutterBottom className={classes.title}>
-                            Money
+                            MONEY
                             </Typography>
                         <form onSubmit={this.handleSubmit}>
                             <TextField
@@ -95,6 +100,7 @@ class SignIn extends Component {
                                 onChange={this.handleChange}
                                 error={errors.password ? true : false}
                                 helperText={errors.password}
+                                className={classes.textField}
                             />
                             {loading && (
                                 <LinearProgress />
@@ -104,42 +110,34 @@ class SignIn extends Component {
                                     {errors.loginError}
                                 </Typography>
                             )}
-                            <Grid
-                                container
-                                spacing={0}
-                                direction="column"
-                                alignItems="center"
-                                justify="center"
-                            >
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    fullWidth
-                                    className={classes.button}
-                                    color="secondary"
-                                >
-                                    LOG IN
+                            <Grid container spacing={3} >
+                                <Grid item xs={12}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        fullWidth
+                                        className={classes.button}
+                                        color="secondary"
+                                        size="large"
+                                    >
+                                        LOG IN
                                     </Button>
-
-                            </Grid>
-                            <Grid
-                                container
-                                spacing={0}
-                                direction="column"
-                                alignItems="center"
-                                justify="center"
-                            >
-                                <Button
-                                    variant="contained"
-                                    fullWidth
-                                    component={Link}
-                                    to='/SignUp'
-                                    onClick={this.handleClick}
-                                >
-                                    SIGN UP
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        variant="contained"
+                                        fullWidth
+                                        component={Link}
+                                        to='/SignUp'
+                                        onClick={this.handleClick}
+                                        className={classes.button}
+                                        size="large"
+                                    >
+                                        SIGN UP
                                 </Button>
-
+                                </Grid>
                             </Grid>
+
                         </form>
                     </Container>
                 </div>

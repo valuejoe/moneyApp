@@ -7,6 +7,9 @@ import { signUp, clearError } from '../../store/Actions/authActions'
 import { Link, Redirect } from 'react-router-dom'
 const useStyles = theme => ({
     root: {
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(12),
+        },
         flexGrow: 1,
         height: '100vh',
         padding: theme.spacing(3),
@@ -14,7 +17,7 @@ const useStyles = theme => ({
     },
     container: {
         [theme.breakpoints.up('sm')]: {
-            padding: theme.spacing(3),
+            padding: theme.spacing(4, 6, 5, 6),
             backgroundColor: 'white'
         },
         height: 'auto',
@@ -25,7 +28,7 @@ const useStyles = theme => ({
         flexGrow: 1,
     },
     button: {
-        margin: theme.spacing(5, 0, 2),
+        margin: theme.spacing(5, 0, 3),
     }
 })
 
@@ -136,6 +139,7 @@ class SignUp extends Component {
                                     className={classes.button}
                                     color="secondary"
                                     fullWidth
+                                    size="large"
                                 >
                                     Submit
                                 </Button>
@@ -147,6 +151,7 @@ class SignUp extends Component {
                                     to='/SignIn'
                                     fullWidth
                                     onClick={this.handleClick}
+                                    size="large"
                                 >
                                     Login
                                 </Button>
