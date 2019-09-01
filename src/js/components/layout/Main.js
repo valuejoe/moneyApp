@@ -12,14 +12,13 @@ class Main extends Component {
 			<HashRouter>
 				<Switch>
 					<Route exact path='/login' component={Login} />
-					<Route exact path='/SignUp' component={SignUp} />
+					<Route exact path='/signUp' component={SignUp} />
 					<Layout>
 						<Route exact path='/' component={Books} />
 						<Route exact path='/statistics' component={Statistics} />
 					</Layout>
 				</Switch>
 			</HashRouter>
-
 		)
 	}
 }

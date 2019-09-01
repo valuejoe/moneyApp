@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const signUp = (newUser, history) => {
+export const signupAction = (newUser, history) => {
     return (dispatch) => {
         dispatch({ type: 'LOADING_UI' })
         const { errors, isSignUpEmpty } = isSignUpOrSingInEmpty(newUser);

@@ -1,185 +1,179 @@
-import React, { Component } from 'react'
-import { CssBaseline, Container, TextField, Button, Grid, Typography, LinearProgress } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { signUp, clearError } from '../../store/Actions/authActions'
-import { Link, Redirect } from 'react-router-dom'
-const useStyles = theme => ({
-    root: {
-        [theme.breakpoints.up('sm')]: {
-            padding: theme.spacing(12),
-        },
-        flexGrow: 1,
-        height: '100vh',
-        padding: theme.spacing(3),
-        backgroundColor: '#f1f8e9',
-    },
-    container: {
-        [theme.breakpoints.up('sm')]: {
-            padding: theme.spacing(4, 6, 5, 6),
-            backgroundColor: 'white'
-        },
-        height: 'auto',
-        borderRadius: '10px',
-    },
-    textField: {
-        width: 'auto',
-        flexGrow: 1,
-    },
-    button: {
-        margin: theme.spacing(5, 0, 3),
-    }
-})
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+import { Container, Grid, Typography, Hidden, Link, InputAdornment, TextField, Fade, LinearProgress } from '@material-ui/core';
+import MailIcon from '@material-ui/icons/MailOutlineOutlined';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import PersonIcon from '@material-ui/icons/PersonOutline';
+import UIstyle from './UIstyle';
+import { GreenButton } from '../../util/Button';
+import SecondTitle from './SecondTitle';
+import GridColumnCenter from './GridColumnCenter';
+import { signupAction, clearError } from '../../store/Actions/authActions';
 
-class SignUp extends Component {
-
-    state = {
+function Main({ color, history }) {
+    const iconColor = color === 'white' ? ({ color: '#F1F5ED' }) : ({ color: '#7A7474' })
+    const { blackInput, whiteInput, typography } = UIstyle()
+    const [userData, setUserData] = useState({
         username: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+    })
+    const { errors, loading } = useSelector((state) => state.UI)
+    const { auth } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    console.log(errors)
+    //clear error when component unmount
+    useEffect(() => {
+        return () => {
+            dispatch(clearError());
+        }
+    }, [])
+
+    const handleChange = (e) => {
+        setUserData({ ...userData, [e.target.id]: e.target.value });
+        dispatch(clearError());
     }
 
-    handleClick = () => {
-        this.props.clearError()
-    }
-
-    handleChange = (e) => {
-        this.setState({
-            [e.target.id]: e.target.value
-        });
-        this.props.clearError()
-    }
-
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        this.props.signUp(this.state, this.props.history);
+        dispatch(signupAction(userData, history))
     }
+    return (
+        <Container>
+            <form onSubmit={handleSubmit}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            id="username"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Username"
+                            className={color === 'white' ? whiteInput : blackInput}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <PersonIcon style={iconColor} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={errors.username ? true : false}
+                            helperText={errors.username}
+                        />
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            id="email"
+                            type="email"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Email"
+                            className={color === 'white' ? whiteInput : blackInput}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <MailIcon style={iconColor} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={errors.email ? true : false}
+                            helperText={errors.email}
+                        />
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            id="password"
+                            type="password"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Password"
+                            className={color === 'white' ? whiteInput : blackInput}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LockIcon style={iconColor} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={errors.password ? true : false}
+                            helperText={errors.password}
+                        />
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            id="confirmPassword"
+                            type="password"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Confirm Password"
+                            className={color === 'white' ? whiteInput : blackInput}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LockIcon style={iconColor} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={errors.confirmPassword ? true : false}
+                            helperText={errors.confirmPassword}
+                        />
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        {loading && (
+                            <LinearProgress style={{ maxWidth: '400px' }} />
+                        )}
+                        <Typography className={typography}>
+                            <Link component={RouterLink} to="/login" style={iconColor}>
+                                Already Have an Account ?
+                        </Link>
+                        </Typography>
+                        <GreenButton fullWidth type="submit">SUBMIT</GreenButton>
+                    </Grid>
+                </Grid>
+            </form>
+        </Container>
+    )
+}
 
-
-    render() {
-        const { classes, auth } = this.props;
-        const { errors, loading } = this.props.UI
-
-        return (
-            <React.Fragment>
-                {auth && (<Redirect to='/' />)}
-                <div className={classes.root}>
-                    <CssBaseline />
-                    <Container
-                        maxWidth="sm"
-                        className={classes.container}
-                    >
-                        <Typography variant="h5">
-                            Sign Up
-                    </Typography>
-                        <form onSubmit={this.handleSubmit}>
-                            <Grid container spacing={0}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        onChange={this.handleChange}
-                                        variant="outlined"
-                                        id="username"
-                                        label="Username"
-                                        margin="normal"
-                                        fullWidth
-                                        autoFocus
-                                        error={errors.username ? true : false}
-                                        helperText={errors.username}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        type="email"
-                                        onChange={this.handleChange}
-                                        variant="outlined"
-                                        id="email"
-                                        label="Email Address"
-                                        margin="normal"
-                                        fullWidth
-                                        error={errors.email ? true : false}
-                                        helperText={errors.email}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        type="password"
-                                        onChange={this.handleChange}
-                                        variant="outlined"
-                                        id="password"
-                                        label="Password"
-                                        margin="normal"
-                                        fullWidth
-                                        error={errors.password ? true : false}
-                                        helperText={errors.password}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        type="password"
-                                        onChange={this.handleChange}
-                                        variant="outlined"
-                                        id="confirmPassword"
-                                        label="Confirm Password"
-                                        margin="normal"
-                                        fullWidth
-                                        error={errors.confirmPassword ? true : false}
-                                        helperText={errors.confirmPassword}
-                                    />
-                                </Grid>
-                            </Grid>
-                            {loading && (
-                                <LinearProgress />
-                            )}
+const Signup = (props) => {
+    const { auth } = useSelector((state) => state.auth)
+    return (
+        <React.Fragment>
+            {auth && (<Redirect to="/" />)}
+            <Fade in={true}>
+                <Grid container>
+                    <Grid item xs={12} md={5} className={UIstyle().root} style={{ backgroundColor: '#DFA47C', }}>
+                        <GridColumnCenter>
                             <Grid item xs={12}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className={classes.button}
-                                    color="secondary"
-                                    fullWidth
-                                    size="large"
-                                >
-                                    Submit
-                                </Button>
+                                <SecondTitle />
                             </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    variant="contained"
-                                    component={Link}
-                                    to='/login'
-                                    fullWidth
-                                    onClick={this.handleClick}
-                                    size="large"
-                                >
-                                    Login
-                                </Button>
-                            </Grid>
-                        </form>
-                    </Container>
-                </div>
-            </React.Fragment>
-        )
-    }
+                            <Hidden mdUp>
+                                <Grid item xs={12}>
+                                    <Main color="white" history={props.history} />
+                                </Grid>
+                            </Hidden>
+                        </GridColumnCenter>
+                    </Grid>
+                    <Hidden smDown>
+                        <Grid item md={7}
+                            style={{
+                                backgroundColor: 'white',
+                            }}>
+                            <GridColumnCenter>
+                                <Main history={props.history} />
+                            </GridColumnCenter>
+                        </Grid>
+                    </Hidden>
+                </Grid>
+            </Fade>
+        </React.Fragment>
+    )
 }
 
-SignUp.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-const MapStateToProps = (state) => {
-    return {
-        UI: state.UI,
-        auth: state.auth.auth
-    }
-}
-
-const MapDispatchToProps = (dispatch) => {
-    return {
-        signUp: (state, history) => dispatch(signUp(state, history)),
-        clearError: () => dispatch(clearError())
-    }
-}
-
-export default connect(MapStateToProps, MapDispatchToProps)(withStyles(useStyles)(SignUp))
+export default Signup
