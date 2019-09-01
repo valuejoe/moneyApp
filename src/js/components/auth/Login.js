@@ -17,7 +17,6 @@ function Main({ history }) {
     const { blackInput, typography } = UIstyle()
     const [userData, setUserData] = useState({ email: '', password: '' })
     const { errors, loading } = useSelector((state) => state.UI)
-    const { auth } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
 
     //clear error when component unmount
@@ -38,76 +37,74 @@ function Main({ history }) {
         dispatch(loginAction(userData, history));
     }
     return (
-        <React.Fragment>
-            {auth && (<Redirect to="/" />)}
-            <Container>
-
-                <form onSubmit={handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} align="center">
-                            <TextField
-                                id="email"
-                                type="email"
-                                variant="outlined"
-                                fullWidth
-                                placeholder="Email"
-                                className={blackInput}
-                                onChange={handleChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <MailIcon style={{ color: '#7A7474' }} />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} align="center">
-                            <TextField
-                                id="password"
-                                type="password"
-                                variant="outlined"
-                                fullWidth
-                                placeholder="Password"
-                                className={blackInput}
-                                onChange={handleChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <LockIcon style={{ color: '#7A7474' }} />
-                                        </InputAdornment>
-                                    ),
-
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} align="center">
-                            {loading && (
-                                <LinearProgress style={{ maxWidth: '400px' }} />
-                            )}
-                            {errors.loginError && (
-                                <Typography color='error' style={{ fontSize: '12px' }}>
-                                    {errors.loginError}
-                                </Typography>
-                            )}
-                            <Typography className={typography}>
-                                <Link component={RouterLink} to="/signup" color="textSecondary">
-                                    Don't Have an Account ?
-                            </Link>
-                            </Typography>
-                            <MustardButton fullWidth type="submit">Go</MustardButton>
-                        </Grid>
+        <Container>
+            <form onSubmit={handleSubmit}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            id="email"
+                            type="email"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Email"
+                            className={blackInput}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <MailIcon style={{ color: '#7A7474' }} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
                     </Grid>
-                </form>
-            </Container>
-        </React.Fragment>
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            id="password"
+                            type="password"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Password"
+                            className={blackInput}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LockIcon style={{ color: '#7A7474' }} />
+                                    </InputAdornment>
+                                ),
+
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        {loading && (
+                            <LinearProgress style={{ maxWidth: '400px' }} />
+                        )}
+                        {errors.loginError && (
+                            <Typography color='error' style={{ fontSize: '12px' }}>
+                                {errors.loginError}
+                            </Typography>
+                        )}
+                        <Typography className={typography}>
+                            <Link component={RouterLink} to="/signup" color="textSecondary">
+                                Don't Have an Account ?
+                            </Link>
+                        </Typography>
+                        <MustardButton fullWidth type="submit">Go</MustardButton>
+                    </Grid>
+                </Grid>
+            </form>
+        </Container>
     )
 }
 
 const Login = (props) => {
 
+    const { auth } = useSelector((state) => state.auth)
     return (
         <React.Fragment>
+            {auth && (<Redirect to="/" />)}
             <Fade in={true}>
                 <Grid container>
                     <Grid item xs={12} md={5} className={UIstyle().root} style={{ backgroundColor: '#F1F5ED', }}>
