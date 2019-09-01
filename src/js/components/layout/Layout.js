@@ -4,7 +4,7 @@ import {
 	CssBaseline, Toolbar, Typography
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import LoginSelectList from './LoginSelectList'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -79,6 +79,7 @@ class Layout extends Component {
 
 		return (
 			<React.Fragment>
+				{!auth && (<Redirect to='/login' />)}
 				<div className={classes.root}>
 					<CssBaseline />
 					<React.Fragment>

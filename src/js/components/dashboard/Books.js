@@ -21,7 +21,7 @@ class Books extends Component {
 		const { classes, auth } = this.props
 		return (
 			<React.Fragment>
-				{!auth && (<Redirect to='/SignIn' />)}
+				{!auth && (<Redirect to='/login' />)}
 				<Hidden smDown>
 					<Grid container spacing={2} className={classes.costList}>
 						<Grid item xs={6} >

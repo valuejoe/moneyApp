@@ -29,7 +29,7 @@ export const signUp = (newUser, history) => {
     }
 };
 
-export const signIn = (userData, history) => {
+export const loginAction = (userData, history) => {
     return (dispatch) => {
         dispatch({ type: 'LOADING_UI' })
         const { errors, isSignInEmpty } = isSignUpOrSingInEmpty(userData)

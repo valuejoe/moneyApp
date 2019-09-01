@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { signIn, clearError } from '../../store/Actions/authActions'
+import { loginAction, clearError } from '../../store/Actions/authActions'
 
 const useStyles = theme => ({
     root: {
@@ -60,7 +60,7 @@ class SignIn extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.signIn(this.state, this.props.history);
+        this.props.loginAction(this.state, this.props.history);
     }
 
     render() {
@@ -159,7 +159,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signIn: (userData, history) => dispatch(signIn(userData, history)),
+        loginAction: (userData, history) => dispatch(loginAction(userData, history)),
         clearError: () => dispatch(clearError())
     }
 }

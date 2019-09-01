@@ -148,7 +148,7 @@ class SignUp extends Component {
                                 <Button
                                     variant="contained"
                                     component={Link}
-                                    to='/SignIn'
+                                    to='/login'
                                     fullWidth
                                     onClick={this.handleClick}
                                     size="large"
