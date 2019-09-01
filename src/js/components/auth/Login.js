@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import {
     Container, Grid, Typography, Hidden, Link,
     InputAdornment, TextField, Fade, LinearProgress
@@ -17,6 +17,7 @@ function Main({ history }) {
     const { blackInput, typography } = UIstyle()
     const [userData, setUserData] = useState({ email: '', password: '' })
     const { errors, loading } = useSelector((state) => state.UI)
+    const { auth } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
 
     //clear error when component unmount
@@ -37,65 +38,69 @@ function Main({ history }) {
         dispatch(loginAction(userData, history));
     }
     return (
-        <Container>
-            <form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} align="center">
-                        <TextField
-                            id="email"
-                            type="email"
-                            variant="outlined"
-                            fullWidth
-                            placeholder="Email"
-                            className={blackInput}
-                            onChange={handleChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <MailIcon style={{ color: '#7A7474' }} />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12} align="center">
-                        <TextField
-                            id="password"
-                            type="password"
-                            variant="outlined"
-                            fullWidth
-                            placeholder="Password"
-                            className={blackInput}
-                            onChange={handleChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <LockIcon style={{ color: '#7A7474' }} />
-                                    </InputAdornment>
-                                ),
+        <React.Fragment>
+            {auth && (<Redirect to="/" />)}
+            <Container>
 
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12} align="center">
-                        {loading && (
-                            <LinearProgress style={{ maxWidth: '400px' }} />
-                        )}
-                        {errors.loginError && (
-                            <Typography color='error' style={{ fontSize: '12px' }}>
-                                {errors.loginError}
-                            </Typography>
-                        )}
-                        <Typography className={typography}>
-                            <Link component={RouterLink} to="/signup" color="textSecondary">
-                                Don't Have an Account ?
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} align="center">
+                            <TextField
+                                id="email"
+                                type="email"
+                                variant="outlined"
+                                fullWidth
+                                placeholder="Email"
+                                className={blackInput}
+                                onChange={handleChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <MailIcon style={{ color: '#7A7474' }} />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                            <TextField
+                                id="password"
+                                type="password"
+                                variant="outlined"
+                                fullWidth
+                                placeholder="Password"
+                                className={blackInput}
+                                onChange={handleChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <LockIcon style={{ color: '#7A7474' }} />
+                                        </InputAdornment>
+                                    ),
+
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                            {loading && (
+                                <LinearProgress style={{ maxWidth: '400px' }} />
+                            )}
+                            {errors.loginError && (
+                                <Typography color='error' style={{ fontSize: '12px' }}>
+                                    {errors.loginError}
+                                </Typography>
+                            )}
+                            <Typography className={typography}>
+                                <Link component={RouterLink} to="/signup" color="textSecondary">
+                                    Don't Have an Account ?
                             </Link>
-                        </Typography>
-                        <MustardButton fullWidth type="submit">Go</MustardButton>
+                            </Typography>
+                            <MustardButton fullWidth type="submit">Go</MustardButton>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </form>
-        </Container>
+                </form>
+            </Container>
+        </React.Fragment>
     )
 }
 
